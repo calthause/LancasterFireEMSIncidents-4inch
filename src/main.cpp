@@ -180,7 +180,7 @@ enum class IncidentFilter
 IncidentFilter incidentFilter = IncidentFilter::All;
 bool companyDirectoryVisible = false;
 int companyDirectoryPage = 0;
-const int COMPANIES_PER_PAGE = 12;
+const int COMPANIES_PER_PAGE = 8;
 struct FireCompany
 {
   const char* station;
@@ -982,8 +982,8 @@ void drawSmoothCountyOutline(int originX, int originY, float scale, uint16_t lin
 
 void drawWifiSignalBars()
 {
-  const int barX = COUNTY_OUTLINE_X + 51;
-  const int barBottom = COUNTY_OUTLINE_Y + 36;
+  const int barX = COUNTY_OUTLINE_X + 58;
+  const int barBottom = COUNTY_OUTLINE_Y + 30;
   const int barWidth = 4;
   const int barGap = 2;
   int bars = 0;
@@ -996,7 +996,7 @@ void drawWifiSignalBars()
 
   for (int index = 0; index < 4; ++index)
   {
-    const int height = 4 + index * 5;
+    const int height = 4 + index * 4;
     const uint16_t color = index < bars ? COLOR_CYAN : COLOR_DARK_GRAY;
     display.fillRect(barX + index * (barWidth + barGap),
                      barBottom - height, barWidth, height, color);
@@ -1012,15 +1012,15 @@ void drawRotationButton()
 
   if (incidentRotationPaused)
   {
-    const int left = ROTATION_BUTTON_X + 18;
-    display.fillTriangle(left, ROTATION_BUTTON_Y + 10,
-               left, ROTATION_BUTTON_Y + 26,
-               left + 12, ROTATION_BUTTON_Y + 18, COLOR_CYAN);
+    const int left = ROTATION_BUTTON_X + 15;
+    display.fillTriangle(left, ROTATION_BUTTON_Y + 9,
+               left, ROTATION_BUTTON_Y + 21,
+               left + 10, ROTATION_BUTTON_Y + 15, COLOR_CYAN);
   }
   else
   {
-    display.fillRect(ROTATION_BUTTON_X + 18, ROTATION_BUTTON_Y + 10, 4, 15, COLOR_CYAN);
-    display.fillRect(ROTATION_BUTTON_X + 27, ROTATION_BUTTON_Y + 10, 4, 15, COLOR_CYAN);
+    display.fillRect(ROTATION_BUTTON_X + 15, ROTATION_BUTTON_Y + 9, 4, 13, COLOR_CYAN);
+    display.fillRect(ROTATION_BUTTON_X + 24, ROTATION_BUTTON_Y + 9, 4, 13, COLOR_CYAN);
   }
 }
 
@@ -1043,34 +1043,32 @@ void markWifiConfigured()
 void drawWifiSetupScreen()
 {
   display.fillScreen(COLOR_BG);
-  display.fillRect(0, 0, display.width(), 45, COLOR_HEADER);
+  display.fillRect(0, 0, display.width(), 40, COLOR_HEADER);
   display.setTextColor(COLOR_WHITE, COLOR_HEADER);
-  display.setTextSize(1);
-  display.setCursor(15, 15);
-  display.print("Lancaster Fire & EMS LIVE");
-  display.setCursor(16, 15);
+  display.setTextSize(1.5f, 1.5f);
+  display.setCursor(15, 13);
   display.print("Lancaster Fire & EMS LIVE");
 
   display.setTextColor(COLOR_WHITE, COLOR_BG);
   display.setTextSize(2);
-  display.setCursor(33, 93);
+  display.setCursor(33, 83);
   display.print("Wi-Fi setup");
 
   display.setTextSize(1);
-  display.setCursor(33, 147);
+  display.setCursor(33, 131);
   display.print("Connect your phone's Wi-Fi to:");
   display.setTextColor(COLOR_CYAN, COLOR_BG);
   display.setTextSize(2);
-  display.setCursor(33, 177);
+  display.setCursor(33, 157);
   display.print("LANCO-FIRE-EMS SETUP");
 
   display.setTextColor(COLOR_WHITE, COLOR_BG);
   display.setTextSize(1);
-  display.setCursor(33, 231);
+  display.setCursor(33, 205);
   display.print("A setup page will open");
-  display.setCursor(33, 255);
+  display.setCursor(33, 227);
   display.print("to choose your Wi-Fi.");
-  display.setCursor(33, 279);
+  display.setCursor(33, 248);
   display.print("Use a 2.4 GHz Wi-Fi network.");
 }
 
@@ -1096,9 +1094,9 @@ bool shouldCalibrateTouch()
   display.fillScreen(COLOR_BG);
   display.setTextColor(COLOR_WHITE, COLOR_BG);
   display.setTextSize(1);
-  display.setCursor(42, 126);
+  display.setCursor(28, 84);
   display.print("Hold screen to calibrate");
-  display.setCursor(42, 153);
+  display.setCursor(28, 102);
   display.print("or wait for dashboard");
 
   const unsigned long promptStart = millis();
@@ -1129,10 +1127,10 @@ void calibrateTouchAtBoot()
   display.fillScreen(COLOR_BG);
   display.setTextColor(COLOR_WHITE, COLOR_BG);
   display.setTextSize(2);
-  display.setCursor(42, 105);
+  display.setCursor(28, 70);
   display.print("Touch calibration");
   display.setTextSize(1);
-  display.setCursor(42, 158);
+  display.setCursor(28, 105);
   display.print("Touch each target as it appears");
 
   uint16_t calibration[8] = {};
@@ -1208,35 +1206,35 @@ void drawMetricCard(int x, int y, int w, int h,
                     const char* labelLineOne, const char* labelLineTwo,
                     const char* value, uint16_t accentColor)
 {
-  display.fillRoundRect(x, y, w, h, 12, COLOR_CARD);
-  display.fillRect(x + 9, y + 9, w - 18, 8, accentColor);
+  display.fillRoundRect(x, y, w, h, 8, COLOR_CARD);
+  display.fillRect(x + 8, y + 5, w - 16, 6, accentColor);
 
   display.setTextColor(0x0000, COLOR_CARD);
   display.setTextSize(1);
   const int firstLabelWidth = display.textWidth(labelLineOne);
-  display.setCursor(x + (w - firstLabelWidth) / 2, y + 20);
+  display.setCursor(x + (w - firstLabelWidth) / 2, y + 17);
   display.print(labelLineOne);
 
   const int secondLabelWidth = display.textWidth(labelLineTwo);
-  display.setCursor(x + (w - secondLabelWidth) / 2, y + 33);
+  display.setCursor(x + (w - secondLabelWidth) / 2, y + 29);
   display.print(labelLineTwo);
 
   display.setTextSize(2);
   const int valueWidth = display.textWidth(value);
-  display.setCursor(x + (w - valueWidth) / 2, y + 51);
+  display.setCursor(x + (w - valueWidth) / 2, y + 45);
   display.print(value);
 }
 
 void drawActiveCard(int x, int y)
 {
-  display.fillRoundRect(x, y, 225, 78, 12, COLOR_CARD);
-  display.fillRect(x + 9, y + 6, 207, 6, COLOR_RED);
-  display.fillRect(x + 112, y + 26, 1, 44, COLOR_MUTED);
+  display.fillRoundRect(x, y, 225, 68, 8, COLOR_CARD);
+  display.fillRect(x + 8, y + 5, 209, 5, COLOR_RED);
+  display.fillRect(x + 112, y + 22, 2, 38, COLOR_MUTED);
 
   display.setTextColor(0x0000, COLOR_CARD);
   display.setTextSize(1);
   const int activeWidth = display.textWidth("ACTIVE");
-  display.setCursor(x + (225 - activeWidth) / 2, y + 13);
+  display.setCursor(x + (225 - activeWidth) / 2, y + 12);
   display.print("ACTIVE");
 
   const char* filterText = incidentFilter == IncidentFilter::Fire
@@ -1247,22 +1245,22 @@ void drawActiveCard(int x, int y)
                  ? "Vehicle only"
                  : "All";
   const int filterWidth = display.textWidth(filterText);
-  display.setCursor(x + (225 - filterWidth) / 2, y + 27);
+  display.setCursor(x + (225 - filterWidth) / 2, y + 24);
   display.print(filterText);
 
   const int fireWidth = display.textWidth("Fire");
-  display.setCursor(x + (112 - fireWidth) / 2 - 6, y + 37);
+  display.setCursor(x + (112 - fireWidth) / 2 - 5, y + 33);
   display.print("Fire");
   const int medicalWidth = display.textWidth("Medical");
-  display.setCursor(x + 112 + (112 - medicalWidth) / 2 + 12, y + 37);
+  display.setCursor(x + 112 + (112 - medicalWidth) / 2 + 10, y + 33);
   display.print("Medical");
 
   display.setTextSize(2);
   const int fireCountWidth = display.textWidth(String(fireIncidentCount).c_str());
-  display.setCursor(x + (112 - fireCountWidth) / 2 - 6, y + 51);
+  display.setCursor(x + (112 - fireCountWidth) / 2 - 5, y + 45);
   display.print(fireIncidentCount);
   const int medicalCountWidth = display.textWidth(String(medicalIncidentCount).c_str());
-  display.setCursor(x + 112 + (112 - medicalCountWidth) / 2 + 12, y + 51);
+  display.setCursor(x + 112 + (112 - medicalCountWidth) / 2 + 10, y + 45);
   display.print(medicalIncidentCount);
 }
 
@@ -1360,7 +1358,7 @@ void drawUnitLines(const char* units, int x, int y, int maxWidth)
       remaining.trim();
     }
 
-    display.setCursor(x, y + line * 15);
+    display.setCursor(x, y + line * 13);
     if (remaining.length() > 0 && line == 1)
     {
       drawClippedText((lineText + "...").c_str(), maxWidth);
@@ -1376,7 +1374,7 @@ void drawIncidentCard(int index, int x, int y)
 {
   const Incident& incident = incidents[index];
   const int cardWidth = 450;
-  const int cardHeight = 162;
+  const int cardHeight = 142;
   time_t newestEpoch = 0;
   for (int incidentIndex = 0; incidentIndex < incidentCount; ++incidentIndex)
   {
@@ -1405,47 +1403,47 @@ void drawIncidentCard(int index, int x, int y)
              (ageSeconds % 3600) / 60);
   }
 
-  display.fillRoundRect(x, y, cardWidth, cardHeight, 12, COLOR_CARD);
+  display.fillRoundRect(x, y, cardWidth, cardHeight, 8, COLOR_CARD);
   const bool fireBanner = isFireIncident(incident.title, incident.unit);
   const bool vehicleAccidentBanner = isVehicleAccident(incident.title);
   const bool classOneBanner = isClassOneIncident(incident.title);
   const bool medicalBanner = isMedicalEmergency(incident.title);
-  const int bannerWidth = fireBanner || vehicleAccidentBanner || classOneBanner ? 8 : medicalBanner ? 3 : 2;
+  const int bannerWidth = fireBanner || vehicleAccidentBanner || classOneBanner ? 5 : medicalBanner ? 2 : 1;
   const uint16_t borderColor = fireBanner || classOneBanner ? COLOR_DARK_RED : incident.color;
   for (int border = 0; border < bannerWidth; ++border)
   {
     display.drawRoundRect(x + border, y + border,
                           cardWidth - border * 2, cardHeight - border * 2,
-                          12 - border, borderColor);
+                          8 - border, borderColor);
   }
 
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(1);
-  display.setCursor(x + 21, y + 20);
-  drawClippedText(incident.title, 285);
+  display.setCursor(x + 20, y + 17);
+  drawClippedText(incident.title, 330);
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
   const int ageWidth = display.textWidth(ageText);
-  display.setCursor(x + cardWidth - ageWidth - 18, y + 20);
+  display.setCursor(x + cardWidth - ageWidth - 16, y + 17);
   display.print(ageText);
 
   display.setTextColor(0x0000, COLOR_CARD);
-  display.setCursor(x + 21, y + 56);
+  display.setCursor(x + 20, y + 49);
   display.print("LOCATION: ");
-  drawClippedText(incident.township, 327);
+  drawClippedText(incident.township, 340);
 
-  display.setCursor(x + 21, y + 80);
+  display.setCursor(x + 20, y + 70);
   display.print("STREET: ");
-  drawClippedText(incident.street, 357);
+  drawClippedText(incident.street, 370);
 
-  display.setCursor(x + 21, y + 108);
+  display.setCursor(x + 20, y + 95);
   display.print("UNITS: ");
-  const int unitsX = x + 87;
-  display.setCursor(unitsX, y + 108);
-  drawUnitLines(incident.unit, unitsX, y + 108, 363);
+  const int unitsX = x + 80;
+  display.setCursor(unitsX, y + 95);
+  drawUnitLines(incident.unit, unitsX, y + 95, 380);
 
-  display.setCursor(x + 21, y + 141);
+  display.setCursor(x + 20, y + 122);
   display.print("COMPANY: ");
-  drawClippedText(incident.company, 336);
+  drawClippedText(incident.company, 350);
 }
 
 bool matchesIncidentFilter(const Incident& incident)
@@ -1578,106 +1576,106 @@ String resolveUnitDescription(const String& unitText)
 void drawUnitsHelpPopup()
 {
   const int popupX = 30;
-  const int popupY = 63;
+  const int popupY = 56;
   const int popupWidth = 420;
-  const int popupHeight = 231;
-  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CARD);
-  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CYAN);
+  const int popupHeight = 205;
+  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CARD);
+  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CYAN);
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(2);
-  display.setCursor(popupX + 24, popupY + 21);
+  display.setCursor(popupX + 22, popupY + 18);
   display.print("UNIT CODES");
   display.setTextSize(1);
-  display.setCursor(popupX + 24, popupY + 66);
+  display.setCursor(popupX + 22, popupY + 59);
   display.print("MU / M   Medic unit");
-  display.setCursor(popupX + 24, popupY + 90);
+  display.setCursor(popupX + 22, popupY + 80);
   display.print("E       Engine");
-  display.setCursor(popupX + 24, popupY + 114);
+  display.setCursor(popupX + 22, popupY + 101);
   display.print("R       Rescue");
-  display.setCursor(popupX + 225, popupY + 66);
+  display.setCursor(popupX + 210, popupY + 59);
   display.print("L       Ladder");
-  display.setCursor(popupX + 225, popupY + 90);
+  display.setCursor(popupX + 210, popupY + 80);
   display.print("SQ      Squad");
-  display.setCursor(popupX + 225, popupY + 114);
+  display.setCursor(popupX + 210, popupY + 101);
   display.print("STA     Station");
-  display.setCursor(popupX + 24, popupY + 150);
+  display.setCursor(popupX + 22, popupY + 133);
   display.print("INT     Intercept medic");
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
-  display.setCursor(popupX + 24, popupY + 195);
+  display.setCursor(popupX + 22, popupY + 173);
   display.print("Tap anywhere to close");
 }
 
 void drawUnitDetailPopup()
 {
   const int popupX = 9;
-  const int popupY = 60;
+  const int popupY = 50;
   const int popupWidth = 462;
-  const int popupHeight = 294;
-  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CARD);
-  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CYAN);
+  const int popupHeight = 230;
+  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CARD);
+  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CYAN);
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(2);
-  display.setCursor(popupX + 21, popupY + 21);
+  display.setCursor(popupX + 20, popupY + 18);
   display.print("UNIT INFO");
   display.setTextSize(1);
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
-  display.setCursor(popupX + 21, popupY + 60);
+  display.setCursor(popupX + 20, popupY + 54);
   display.print("Description:");
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
-  display.setCursor(popupX + 21, popupY + 87);
-  drawWrappedText(unitDetailText.c_str(), popupX + 21, popupY + 87, popupWidth - 42, 9, 18);
+  display.setCursor(popupX + 20, popupY + 74);
+  drawWrappedText(unitDetailText.c_str(), popupX + 20, popupY + 74, popupWidth - 40, 8, 15);
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
-  display.setCursor(popupX + 21, popupY + 270);
+  display.setCursor(popupX + 20, popupY + 208);
   display.print("Tap anywhere to close");
 }
 
 void drawWifiInfoPopup()
 {
   const int popupX = 52;
-  const int popupY = 104;
+  const int popupY = 92;
   const int popupWidth = 375;
-  const int popupHeight = 153;
-  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CARD);
-  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CYAN);
+  const int popupHeight = 136;
+  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CARD);
+  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CYAN);
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(2);
-  display.setCursor(popupX + 24, popupY + 21);
+  display.setCursor(popupX + 22, popupY + 18);
   display.print("WI-FI STATUS");
   display.setTextSize(1);
   if (WiFi.status() == WL_CONNECTED)
   {
     char rssiText[24];
     snprintf(rssiText, sizeof(rssiText), "Signal: %d dBm", WiFi.RSSI());
-    display.setCursor(popupX + 24, popupY + 72);
+    display.setCursor(popupX + 22, popupY + 62);
     display.print("Connected");
-    display.setCursor(popupX + 24, popupY + 98);
+    display.setCursor(popupX + 22, popupY + 82);
     display.print(rssiText);
   }
   else
   {
-    display.setCursor(popupX + 24, popupY + 72);
+    display.setCursor(popupX + 22, popupY + 62);
     display.print("Not connected");
   }
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
-  display.setCursor(popupX + 24, popupY + 126);
+  display.setCursor(popupX + 22, popupY + 112);
   display.print("Tap anywhere to close");
 }
 
 void drawCountyMapPopup()
 {
-  const int popupX = 36;
-  const int popupY = 21;
-  const int popupWidth = 408;
-  const int popupHeight = 318;
-  const int mapScale = 6;
+  const int popupX = 40;
+  const int popupY = 14;
+  const int popupWidth = 400;
+  const int popupHeight = 292;
+  const int mapScale = 7;
   const int mapOriginX = popupX + (popupWidth - 29 * mapScale) / 2;
-  const int mapOriginY = popupY + 60;
+  const int mapOriginY = popupY + 46;
 
-  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CARD);
-  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 12, COLOR_CYAN);
+  display.fillRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CARD);
+  display.drawRoundRect(popupX, popupY, popupWidth, popupHeight, 8, COLOR_CYAN);
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(2);
-  display.setCursor(popupX + 24, popupY + 18);
+  display.setCursor(popupX + 22, popupY + 16);
   display.print("INCIDENT MAP");
 
   drawSmoothCountyOutline(mapOriginX, mapOriginY, mapScale, COLOR_DARK_BLUE);
@@ -1692,21 +1690,21 @@ void drawCountyMapPopup()
   {
     const int dotX = mapOriginX + companyX * mapScale;
     const int dotY = mapOriginY + companyY * mapScale;
-    display.fillCircle(dotX, dotY, 6, COLOR_RED);
-    display.drawCircle(dotX, dotY, 6, COLOR_WHITE);
+    display.fillCircle(dotX, dotY, 5, COLOR_RED);
+    display.drawCircle(dotX, dotY, 5, COLOR_WHITE);
     display.setTextColor(COLOR_WHITE, COLOR_CARD);
-    display.setCursor(popupX + 24, popupY + 261);
-    drawClippedText(incident.company, popupWidth - 48);
+    display.setCursor(popupX + 22, popupY + 250);
+    drawClippedText(incident.company, popupWidth - 44);
   }
   else
   {
     display.setTextColor(COLOR_AMBER, COLOR_CARD);
-    display.setCursor(popupX + 24, popupY + 261);
+    display.setCursor(popupX + 22, popupY + 250);
     display.print("Location unknown for this company");
   }
 
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
-  display.setCursor(popupX + 24, popupY + 291);
+  display.setCursor(popupX + 22, popupY + 270);
   display.print("Tap anywhere to close");
 }
 
@@ -1716,38 +1714,38 @@ void drawCompanyDirectory()
   const int pageCount = (companyCount + COMPANIES_PER_PAGE - 1) / COMPANIES_PER_PAGE;
   const int firstCompany = companyDirectoryPage * COMPANIES_PER_PAGE;
   display.fillScreen(COLOR_BG);
-  display.fillRect(0, 0, display.width(), 45, COLOR_HEADER);
+  display.fillRect(0, 0, display.width(), 40, COLOR_HEADER);
   display.setTextColor(COLOR_WHITE, COLOR_HEADER);
   display.setTextSize(1);
-  display.setCursor(18, 15);
+  display.setCursor(18, 14);
   display.print("LANCASTER FIRE COMPANIES");
   char pageText[8];
   snprintf(pageText, sizeof(pageText), "%d/%d", companyDirectoryPage + 1, pageCount);
   const int pageWidth = display.textWidth(pageText);
-  display.setCursor(405 - pageWidth, 15);
+  display.setCursor(405 - pageWidth, 14);
   display.print(pageText);
-  display.drawRoundRect(429, 5, 40, 36, 6, COLOR_CYAN);
-  display.setCursor(444, 15);
+  display.drawRoundRect(430, 5, 36, 32, 5, COLOR_CYAN);
+  display.setCursor(442, 14);
   display.print("X");
 
   display.setTextColor(COLOR_WHITE, COLOR_BG);
   for (int row = 0; row < COMPANIES_PER_PAGE && firstCompany + row < companyCount; ++row)
   {
-    const int y = 65 + row * 27;
+    const int y = 58 + row * 20;
     const FireCompany& company = fireCompanies[firstCompany + row];
-    display.setCursor(33, y);
+    display.setCursor(30, y);
     display.print(company.station);
-    display.setCursor(81, y);
-    drawClippedText(company.name, 352);
+    display.setCursor(78, y);
+    drawClippedText(company.name, 340);
   }
 
-  display.drawRoundRect(30, 294, 68, 42, 6, COLOR_CYAN);
-  display.drawRoundRect(382, 294, 68, 42, 6, COLOR_CYAN);
+  display.drawRoundRect(30, 274, 60, 36, 5, COLOR_CYAN);
+  display.drawRoundRect(390, 274, 60, 36, 5, COLOR_CYAN);
   display.setTextColor(COLOR_CYAN, COLOR_BG);
   display.setTextSize(2);
-  display.setCursor(54, 303);
+  display.setCursor(52, 282);
   display.print("<");
-  display.setCursor(408, 303);
+  display.setCursor(412, 282);
   display.print(">");
 }
 
@@ -1758,18 +1756,18 @@ void drawNoFilteredIncidents(int x, int y)
                             : incidentFilter == IncidentFilter::Fire
                                   ? "No fire incidents"
                                   : "No medical incidents";
-  display.fillRoundRect(x, y, 450, 162, 12, COLOR_CARD);
-  display.drawRoundRect(x, y, 450, 162, 12, COLOR_DARK_GRAY);
+  display.fillRoundRect(x, y, 450, 142, 8, COLOR_CARD);
+  display.drawRoundRect(x, y, 450, 142, 8, COLOR_DARK_GRAY);
   display.setTextColor(COLOR_WHITE, COLOR_CARD);
   display.setTextSize(2);
   const int messageWidth = display.textWidth(message);
-  display.setCursor(x + (450 - messageWidth) / 2, y + 52);
+  display.setCursor(x + (450 - messageWidth) / 2, y + 46);
   display.print(message);
   display.setTextColor(COLOR_CYAN, COLOR_CARD);
   display.setTextSize(1);
   const char* detail = "Tap the selected filter again for all";
   const int detailWidth = display.textWidth(detail);
-  display.setCursor(x + (450 - detailWidth) / 2, y + 105);
+  display.setCursor(x + (450 - detailWidth) / 2, y + 92);
   display.print(detail);
 }
 
@@ -1796,29 +1794,27 @@ void drawDashboard(bool fullRedraw = true)
   if (fullRedraw)
   {
     display.fillScreen(COLOR_BG);
-    display.fillRect(0, 0, display.width(), 45, COLOR_HEADER);
+    display.fillRect(0, 0, display.width(), 40, COLOR_HEADER);
     display.setTextColor(COLOR_WHITE, COLOR_HEADER);
-    display.setTextSize(1);
-    display.setCursor(15, 15);
-    display.print("Lancaster Fire & EMS LIVE");
-    display.setCursor(16, 15);
+    display.setTextSize(1.5f, 1.5f);
+    display.setCursor(15, 13);
     display.print("Lancaster Fire & EMS LIVE");
   }
   else
   {
-    display.fillRect(390, 0, 90, 45, COLOR_HEADER);
+    display.fillRect(390, 0, 90, 40, COLOR_HEADER);
   }
 
   display.setTextColor(COLOR_CYAN, COLOR_HEADER);
   display.setTextSize(1);
-  display.setCursor(420, 15);
+  display.setCursor(420, 14);
   display.print(hours < 10 ? "0" : "");
   display.print(hours);
   display.print(":");
   display.print(minutes < 10 ? "0" : "");
   display.print(minutes);
 
-  display.setCursor(402, 30);
+  display.setCursor(402, 26);
   display.print(dateText);
 
   if (fullRedraw)
@@ -1827,27 +1823,27 @@ void drawDashboard(bool fullRedraw = true)
   }
   else
   {
-    display.fillRect(338, 0, 45, 45, COLOR_HEADER);
+    display.fillRect(338, 0, 45, 40, COLOR_HEADER);
   }
   drawWifiSignalBars();
   drawRotationButton();
 
-  drawActiveCard(15, 60);
-  drawMetricCard(255, 60, 98, 78, "Responding", "Units", respondingText, COLOR_DARK_BLUE);
-  drawMetricCard(368, 60, 98, 78, "Vehicle", "Accidents", accidentText, COLOR_AMBER);
+  drawActiveCard(15, 54);
+  drawMetricCard(255, 54, 98, 68, "Responding", "Units", respondingText, COLOR_DARK_BLUE);
+  drawMetricCard(368, 54, 98, 68, "Vehicle", "Accidents", accidentText, COLOR_AMBER);
 
   if (fullRedraw)
   {
-    display.fillRoundRect(15, 150, 450, 27, 8, 0x1A1A);
+    display.fillRoundRect(15, 133, 450, 24, 6, 0x1A1A);
     display.setTextColor(COLOR_WHITE, 0x1A1A);
     display.setTextSize(1);
     const char* incidentHeader = "LANCASTER COUNTY INCIDENTS";
-    display.setCursor(27, 156);
-    drawClippedText(incidentHeader, 292);
+    display.setCursor(22, 140);
+    drawClippedText(incidentHeader, 293);
   }
   else
   {
-    display.fillRect(338, 150, 127, 27, 0x1A1A);
+    display.fillRect(338, 133, 127, 24, 0x1A1A);
   }
 
   char feedStatus[20];
@@ -1865,16 +1861,16 @@ void drawDashboard(bool fullRedraw = true)
   display.setTextSize(1);
   display.setTextColor(COLOR_CYAN, 0x1A1A);
   const int feedStatusWidth = display.textWidth(feedStatus);
-  display.setCursor(465 - feedStatusWidth, 156);
+  display.setCursor(465 - feedStatusWidth, 140);
   display.print(feedStatus);
 
   if (incidentFilter != IncidentFilter::All && !hasFilteredIncidents())
   {
-    drawNoFilteredIncidents(15, 189);
+    drawNoFilteredIncidents(15, 168);
   }
   else
   {
-    drawIncidentCard(incidentOffset % incidentCount, 15, 189);
+    drawIncidentCard(incidentOffset % incidentCount, 15, 168);
   }
 
   if (unitsHelpVisible)
@@ -1941,62 +1937,62 @@ void refreshDashboardOnTouch()
       {
         const int companyCount = sizeof(fireCompanies) / sizeof(fireCompanies[0]);
         const int pageCount = (companyCount + COMPANIES_PER_PAGE - 1) / COMPANIES_PER_PAGE;
-        if (touchX >= 429 && touchY < 45)
+        if (touchX >= 430 && touchY < 40)
         {
           companyDirectoryVisible = false;
           incidentRotationPaused = false;
           drawDashboard();
         }
-        else if (touchX >= 30 && touchX < 98 && touchY >= 294)
+        else if (touchX >= 30 && touchX < 90 && touchY >= 274)
         {
           companyDirectoryPage = companyDirectoryPage == 0 ? pageCount - 1 : companyDirectoryPage - 1;
           drawCompanyDirectory();
         }
-        else if (touchX >= 382 && touchX < 450 && touchY >= 294)
+        else if (touchX >= 390 && touchX < 450 && touchY >= 274)
         {
           companyDirectoryPage = (companyDirectoryPage + 1) % pageCount;
           drawCompanyDirectory();
         }
       }
-      else if (touchX >= COUNTY_OUTLINE_X + 56 && touchX < COUNTY_OUTLINE_X + 86 &&
-               touchY >= COUNTY_OUTLINE_Y && touchY < COUNTY_OUTLINE_Y + 45)
+      else if (touchX >= COUNTY_OUTLINE_X + 55 && touchX < COUNTY_OUTLINE_X + 85 &&
+               touchY >= COUNTY_OUTLINE_Y && touchY < COUNTY_OUTLINE_Y + 40)
       {
         wifiInfoVisible = true;
         incidentRotationPaused = true;
         drawDashboard();
       }
       else if (touchX >= COUNTY_OUTLINE_X && touchX < COUNTY_OUTLINE_X + 45 &&
-               touchY >= COUNTY_OUTLINE_Y && touchY < COUNTY_OUTLINE_Y + 45)
+               touchY >= COUNTY_OUTLINE_Y && touchY < COUNTY_OUTLINE_Y + 40)
       {
         companyDirectoryVisible = true;
         companyDirectoryPage = 0;
         incidentRotationPaused = true;
         drawCompanyDirectory();
       }
-      else if (touchX >= 15 && touchX < 87 && touchY >= 189 && touchY < 351)
+      else if (touchX >= 15 && touchX < 87 && touchY >= 168 && touchY < 310)
       {
         countyMapVisible = true;
         incidentRotationPaused = true;
         drawDashboard();
       }
-      else if (touchX >= 87 && touchX < 450 && touchY >= 189 && touchY < 351)
+      else if (touchX >= 87 && touchX < 450 && touchY >= 168 && touchY < 310)
       {
         unitDetailVisible = true;
         unitDetailText = resolveUnitDescription(incidents[incidentOffset % incidentCount].unit);
         incidentRotationPaused = true;
         drawDashboard();
       }
-      else if (touchX >= 15 && touchX < 128 && touchY >= 60 && touchY < 138)
+      else if (touchX >= 15 && touchX < 128 && touchY >= 54 && touchY < 122)
       {
         selectIncidentFilter(IncidentFilter::Fire);
         drawDashboard();
       }
-      else if (touchX >= 128 && touchX < 240 && touchY >= 60 && touchY < 138)
+      else if (touchX >= 128 && touchX < 240 && touchY >= 54 && touchY < 122)
       {
         selectIncidentFilter(IncidentFilter::Medical);
         drawDashboard();
       }
-      else if (touchX >= 368 && touchX < 465 && touchY >= 60 && touchY < 138)
+      else if (touchX >= 368 && touchX < 466 && touchY >= 54 && touchY < 122)
       {
         selectIncidentFilter(IncidentFilter::Vehicle);
         drawDashboard();
@@ -2033,7 +2029,7 @@ void setup()
 
   display.init();
   display.setColorDepth(16);
-  display.setRotation(0);
+  display.setRotation(1);
   if (shouldCalibrateTouch())
   {
     calibrateTouchAtBoot();
